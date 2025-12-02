@@ -1,23 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./index.css";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [result, setResult] = useState(null);
+
+  const dictionary = [
+    { word: "React", meaning: "A JavaScript library for building user interfaces." },
+    { word: "Component", meaning: "A reusable building block in React." },
+    { word: "State", meaning: "An object that stores data for a component." },
+  ];
+
+  const handleSearch = () => {
+    const found = dictionary.find(
+      (item) => item.word.toLowerCase() === searchTerm.toLowerCase()
+    );
+
+    if (found) {
+      setResult(found.meaning);
+    } else {
+      setResult("Word not found in the dictionary.");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>XDictionary</h1>
+
+      <input
+        type="text"
+        placeholder="Search a word..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+
+      <button onClick={handleSearch} className="search-btn">
+        Search
+      </button>
+
+      {result && (
+        <div className="result-box">
+          {result === "Word not found in the dictionary." ? (
+            <p>{result}</p>
+          ) : (
+            <>
+              <h3>Definition:</h3>
+              <p>{result}</p>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
