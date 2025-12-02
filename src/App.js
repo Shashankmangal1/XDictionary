@@ -3,7 +3,7 @@ import "./index.css";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState("");
 
   const dictionary = [
     { word: "React", meaning: "A JavaScript library for building user interfaces." },
@@ -12,6 +12,11 @@ function App() {
   ];
 
   const handleSearch = () => {
+    if (searchTerm.trim() === "") {
+      setResult("Word not found in the dictionary.");
+      return;
+    }
+
     const found = dictionary.find(
       (item) => item.word.toLowerCase() === searchTerm.toLowerCase()
     );
@@ -25,32 +30,21 @@ function App() {
 
   return (
     <div className="container">
-      <h1>XDictionary</h1>
+      <h1>Dictionary App</h1>
 
       <input
         type="text"
         placeholder="Search a word..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
       />
 
-      <button onClick={handleSearch} className="search-btn">
-        Search
-      </button>
+      <button onClick={handleSearch}>Search</button>
 
-      {result && (
-        <div className="result-box">
-          {result === "Word not found in the dictionary." ? (
-            <p>{result}</p>
-          ) : (
-            <>
-              <h3>Definition:</h3>
-              <p>{result}</p>
-            </>
-          )}
-        </div>
-      )}
+      <div className="result-container">
+        <h3>Definition:</h3>
+        <p>{result}</p>
+      </div>
     </div>
   );
 }
